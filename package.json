@@ -1,0 +1,11 @@
+{
+  "name": "language-rkt",
+  "version": "0.0.1",
+  "description": "My syntax support for Racket, based on language-racket package",
+  "repository": "https://github.com/prozion/language-rkt",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {}
+}
