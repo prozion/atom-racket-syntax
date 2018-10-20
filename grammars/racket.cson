@@ -23,9 +23,10 @@ comment: '''
 '''
 fileTypes: [
   "rkt"
+  "rktd"
+  "rktdb"
   "scm"
-  "t"
-  "￿"
+  "ody"
 ]
 'firstLineMatch': '^#!\\s*/.*\\bracket'
 foldingStartMarker: '''
@@ -103,9 +104,13 @@ repository:
         match: '''
           (?x)
           						(?<=(\\(|\\[)) # preceded by ( or \[
-          						( do|or|and|else|quasiquote|begin|if|case|set!|
-          						  cond|let|unquote|let\\*|match-let\\*?|unquote-splicing|delay|
-          						  letrec|values)
+          						( do|else|quasiquote|begin|if|unless|when|case|set!|
+          						  cond|match|
+                        let|let\\*|match-let\\*?|let\\*?-values|local|parameterize|
+                        unquote|unquote-splicing|delay|
+          						  letrec|values|
+                        or\\*?|xor|and\\*?|not|
+                        syntax-case|with-syntax)
           						(?=(\\s|\\())
         '''
       }
@@ -121,7 +126,12 @@ repository:
           						  identifier|integer|symbol|free-identifier=|inexact|
           						  eof-object|exact|list|(?:input|output)-port|pair|
           						  real|rational|zero|vector|negative|odd|null|string|
-          						  eq|equal|eqv|even|number|positive|procedure
+          						  eq|equal|eqv|even|number|positive|procedure|
+                        number|
+                        hash|hasheq|
+                        path|
+                        empty|null|false|void|
+                        not-empty
           						)
           						(\\?)		# name ends with ? sign
           						(?=(\\s|\\()) # followed by space or (
@@ -143,7 +153,7 @@ repository:
           						  integer->char|symbol->string|list->vector|
           						  list->string|identifier->symbol|vector->list|
           						  string->list|string->number|string->symbol|
-          						  number->string
+          						  number->string|syntax->list|syntax->datum
           						)
           						(?=(\\s|\\()) # followed by space or (
 
@@ -189,45 +199,59 @@ repository:
       }
       {
         name: "support.function.module.racket"
-        match: "(require|module(\\+|\\*)?|provide)"
+        match: "(require|cond-require|module(\\+|\\*)?|provide|namespace-require|begin-for-syntax)"
       }
       {
         name: "support.function.definition.racket"
-        match: "(define(-datatype|-struct|-values|/contract|-macro)*|syntax-rules|syntax|defmacro)"
+        match: "(define-syntax-rule|define(-datatype|-struct|-values|/contract|-macro|-for-syntax|-catch|-type|-check)*|syntax-rules|syntax|defmacro|struct)"
       }
       {
         name: "support.function.general.racket"
         match: '''
           (?x)
           						(?<=(\\s|\\()) # preceded by space or (
-          						( append|apply|approximate|
+          						( append|apply|keyword-apply|approximate|
           						  call-with-current-continuation|call/cc|catch|
-          						  construct-identifier|display|foo|
+          						  construct-identifier|
           						  for-each|force|cd|gen-counter|gen-loser|
           						  generate-identifier|last-pair|length|let-syntax|
-          						  letrec-syntax|list|list-ref|list-tail|load|log|
-          						  macro|magnitude|map|andmap|map-streams|max|member|memq|
-          						  memv|min|newline|nil|not|peek-char|rationalize|
+          						  letrec-syntax|list|list-ref|list-tail|take|drop|load|log|
+                        vector|
+                        first|second|third|fourth|fifth|last|
+          						  macro|magnitude|map|andmap|ormap|map-streams|filter|filter-not|clean|foldl|foldr|max|member|memq|sort|
+                        lambda|curry|curryr|
+          						  memv|min|newline|nil|peek-char|rationalize|
           						  read|read-char|return|reverse|sequence|substring|
           						  transcript-off|transcript-on|
           						  truncate|unwrap-syntax|values-list|write|write-char|
+                        void|identity|const|
 
           						  # cons, car, cdr, etc
           						  cons|c(a|d){1,4}r|
 
+                        # logic functions
+                        # or|and|not|
+                        negate|
+
                         # iterators
-                        for|
+                        for|for\\*?/(fold|hash|list|vector|or|and)|
+
+                        # generators
+                        range|
 
           						  # unary math operators
           						  abs|acos|angle|asin|assoc|assq|assv|atan|ceiling|
-          						  cos|floor|round|sin|sqrt|tan|
-          						  (?:real|imag)-part|numerator|denominator
+          						  cos|floor|round|exact-round|exact-floor|exact-ceiling|sin|sqrt|tan|
+          						  (?:real|imag)-part|numerator|denominator|
 
           						  # other math operators
           						  modulo|exp|expt|remainder|quotient|lcm|
 
                         # even more math functions
                         add1|sub1|
+
+                        # hash functions
+                        hash-ref|hash-keys|hash-values|
 
           						  # ports / files
           						  call-with-(?:input|output)-file|
@@ -238,6 +262,9 @@ repository:
           						  # char-«foo»
           						  char-(?:downcase|upcase|ready)|
 
+                        # error handling
+                        raise-syntax-error|with-handlers|error|
+
           						  # make-«foo»
           						  make-(?:polar|promise|rectangular|string|vector)|
 
@@ -245,30 +272,31 @@ repository:
           						  string(?:-(?:append|copy|length|ref))?|
           						  vector(?:-length|-ref)|
 
+                        # regexps functions
+                        regexp-match|regexp|pregexp|
+
                         # random
                         random|
 
                         # module system
-                        all-defined-out|except-out|
+                        all-defined-out|except-out|all-from-out|for-syntax|prefix-in|only-in|rename-in|
 
-                        # other predicates
-                        (empty|null)\\?|
-
-                        # other syntax sugar
-                        unless|
+                        # evals
+                        eval|
 
                         # unit test functions
-                        check(-((not-)?equal|eq|eqv|false|exn))\\?|
-                        check-(pred|=|true|match|regexp-match)\\?|
-                        fail
+                        check|
+                        check(-(equal|not-equal|eq|not-eq|eqv|not-eqv|info))\\?|
+                        check-(pred|=|true|false|match|regexp-match|exn|info)|
+                        fail|
 
-                        # modules system
-                        # require
+          							# output functions
+          							print|printf|println|format|display|displayln|
 
-          							# additional keyword-like functions
-          							# for|when|printf|require
+                        # parameters
+                        make-parameter
           						)
-          						(?=(\\s|\\()) # followed by space or (
+          						(?=(\\s|\\(|\\))) # followed by space or ( or )
 
         '''
       }
