@@ -227,7 +227,7 @@ repository:
                         void|identity|const|
 
           						  # cons, car, cdr, etc
-          						  cons|c(a|d){1,4}r|
+          						  m?cons|(set-)?(m)?c(a|d){1,4}r!?|
 
                         # logic functions
                         # or|and|not|
