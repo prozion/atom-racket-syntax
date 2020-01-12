@@ -104,7 +104,7 @@ repository:
         match: '''
           (?x)
           						(?<=(\\(|\\[)) # preceded by ( or \[
-          						( do|else|quasiquote|begin|if|unless|when|case|set!|
+          						( do|else|quasiquote|begin|if-not|if|unless|when-not|when|case|set!|
           						  cond|match|
                         let|let\\*|match-let\\*?|let\\*?-values|local|parameterize|
                         unquote|unquote-splicing|delay|
@@ -199,7 +199,7 @@ repository:
       }
       {
         name: "support.function.module.racket"
-        match: "(require|cond-require|module(\\+|\\*)?|provide|namespace-require|begin-for-syntax)"
+        match: "(require|cond-require|module(\\+|\\*)?|provide|namespace-require|begin-for-syntax|lazy-require)"
       }
       {
         name: "support.function.definition.racket"
@@ -217,7 +217,7 @@ repository:
           						  generate-identifier|last-pair|length|let-syntax|
           						  letrec-syntax|list|list-ref|list-tail|take|drop|load|log|
                         vector|
-                        first|second|third|fourth|fifth|last|
+                        first|second|third|fourth|fifth|last|rest|
           						  macro|magnitude|map|andmap|ormap|map-streams|filter|filter-not|clean|foldl|foldr|max|member|memq|sort|
                         lambda|curry|curryr|
           						  memv|min|newline|nil|peek-char|rationalize|
@@ -263,13 +263,13 @@ repository:
           						  char-(?:downcase|upcase|ready)|
 
                         # error handling
-                        raise-syntax-error|with-handlers|error|
+                        raise-syntax-error|with-handlers|error|errorf|
 
           						  # make-«foo»
           						  make-(?:polar|promise|rectangular|string|vector)|
 
           						  # string-«foo», vector-«foo»
-          						  string(?:-(?:append|copy|length|ref))?|
+          						  string(?:-(?:append|copy|length|split|trim|ref|replace))?|
           						  vector(?:-length|-ref)|
 
                         # regexps functions
@@ -288,6 +288,7 @@ repository:
                         check|
                         check(-(equal|not-equal|eq|not-eq|eqv|not-eqv|info))\\?|
                         check-(pred|=|true|false|match|regexp-match|exn|info)|
+                        # test-(suite|case)|
                         fail|
 
           							# output functions
@@ -426,7 +427,7 @@ repository:
         begin: '''
           (?x)
           						(?<=\\()       # preceded by (
-          						(define)\\s+   # define
+          						(define|define-catch)\\s+   # define
           						(\\()          # list of parameters
           						  ([[:alnum:]][[:alnum:]!$%&*+-./:<=>?@^_~]*)
           						  ((\\s+
