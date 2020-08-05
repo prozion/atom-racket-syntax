@@ -218,13 +218,14 @@ repository:
           						  letrec-syntax|list|list-ref|list-tail|take|drop|load|log|
                         vector|
                         first|second|third|fourth|fifth|last|rest|
-          						  macro|magnitude|map|andmap|ormap|map-streams|filter|filter-not|clean|foldl|foldr|max|member|memq|sort|
+          						  macro|magnitude|map|andmap|ormap|filter-map|map-streams|filter|filter-not|clean|foldl|foldr|max|member|memq|sort|
                         lambda|curry|curryr|
           						  memv|min|newline|nil|peek-char|rationalize|
           						  read|read-char|return|reverse|sequence|substring|
           						  transcript-off|transcript-on|
           						  truncate|unwrap-syntax|values-list|write|write-char|
                         void|identity|const|
+                        cartesian-product|permutations|combinations|group-by|argmin|argmax|
 
           						  # cons, car, cdr, etc
           						  m?cons|(set-)?(m)?c(a|d){1,4}r!?|
@@ -269,11 +270,11 @@ repository:
           						  make-(?:polar|promise|rectangular|string|vector)|
 
           						  # string-«foo», vector-«foo»
-          						  string(?:-(?:append|copy|length|split|trim|ref|replace))?|
+          						  string(?:-(?:append|copy|join|length|split|trim|ref|replace|downcase|upcase))?|
           						  vector(?:-length|-ref)|
 
                         # regexps functions
-                        regexp-match|regexp|pregexp|
+                        regexp-(match\\*?|replace\\*?)|regexp|pregexp|
 
                         # random
                         random|
@@ -322,7 +323,7 @@ repository:
         match: '''
           (?x)
           						(')\s*
-          						([[:alnum:]][[:alnum:]!$%&*+-./:<=>?@^_~]*)
+          						([[:alnum:]_][[:alnum:]!$%&*+-./:<=>?@^_~]*)
 
         '''
         name: "constant.other.symbol.racket"
