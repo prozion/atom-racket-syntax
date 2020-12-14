@@ -199,7 +199,7 @@ repository:
       }
       {
         name: "support.function.module.racket"
-        match: "(require|cond-require|module(\\+|\\*)?|provide|namespace-require|begin-for-syntax|lazy-require)"
+        match: "(require/typed|require|cond-require|module(\\+|\\*)?|provide|namespace-require|begin-for-syntax|lazy-require)"
       }
       {
         name: "support.function.definition.racket"
