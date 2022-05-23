@@ -218,7 +218,7 @@ repository:
           						  letrec-syntax|list|list-ref|list-tail|take|drop|load|log|
                         vector|
                         first|second|third|fourth|fifth|last|rest|
-          						  macro|magnitude|map|andmap|ormap|filter-map|map-streams|filter|filter-not|clean|foldl|foldr|max|member|memq|sort|
+          						  macro|magnitude|map|andmap|ormap|filter-map|map-streams|filter|filter-not|clean|foldl|foldr|reduce|max|member|memq|sort|
                         lambda|curry|curryr|
           						  memv|min|newline|nil|peek-char|rationalize|
           						  read|read-char|return|reverse|sequence|substring|
@@ -252,7 +252,7 @@ repository:
                         add1|sub1|
 
                         # hash functions
-                        hash-ref|hash-keys|hash-values|
+                        hash-ref[*]?|hash-keys|hash-values|
 
           						  # ports / files
           						  call-with-(?:input|output)-file|
@@ -267,7 +267,7 @@ repository:
                         raise-syntax-error|with-handlers|error|errorf|
 
           						  # make-«foo»
-          						  make-(?:polar|promise|rectangular|string|vector)|
+          						  make-(?:polar|promise|rectangular|string|vector|hash)|
 
           						  # string-«foo», vector-«foo»
           						  string(?:-(?:append|copy|join|length|split|trim|ref|replace|downcase|upcase))?|
